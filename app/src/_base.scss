@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;1,300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap");
+
+$background-primary: #f5f9fa;
+$green-primary: #9fcb22;
+$green-secondary: #14462e;
+$light-blue-primary: #92ddd8;
+$orange-primary: #fa9421;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 10px;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Barlow", sans-serif;
+  background-color: $background-primary;
+  ::selection {
+    background-color: transparent;
+  }
+}
+
+.transparent {
+  background-color: transparent;
+  color: $green-secondary;
+  padding: 1em 3em;
+  border: 2px solid $green-secondary;
+  font-size: 1.4em;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    background-color: $green-secondary;
+    color: #ffffff;
+  }
+}
+
+.colored {
+  background-color: $green-secondary;
+  color: #ffffff;
+  padding: 1em 3em;
+  border: 2px solid $green-secondary;
+  font-size: 1.4em;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    background-color: transparent;
+    color: $green-secondary;
+  }
+}

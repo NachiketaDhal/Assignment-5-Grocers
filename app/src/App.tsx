@@ -1,19 +1,20 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-// import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar";
 import AllProducts from "./pages/AllProducts";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Footer from "./components/Footer";
 import "./_app.scss";
 
 function App() {
   return (
     <main>
       <Router>
-        {/* <Navbar /> */}
+        <Navbar />
         <Switch>
           <Route path="/" component={Home} exact />
           <Route path="/products" component={AllProducts} exact />
@@ -21,6 +22,7 @@ function App() {
           <Route path="/login" component={Login} exact />
           <Route path="/signup" component={Signup} exact />
         </Switch>
+        <Footer />
       </Router>
     </main>
   );

@@ -34,6 +34,10 @@ const Container = styled.section`
     height: 25em;
     width: 38em;
     position: relative;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      box-shadow: 2px 5px 12px rgba(0, 0, 0, 0.3);
+    }
     p {
       color: #ffffff;
       font-family: "Jost";

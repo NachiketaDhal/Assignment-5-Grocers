@@ -50,3 +50,27 @@ body {
     color: $green-secondary;
   }
 }
+
+.colored2 {
+  background-color: $green-secondary;
+  color: #ffffff;
+  padding: 0.7em 3em;
+  font-size: 1.4em;
+  border: none;
+  text-decoration: none;
+  transition: all 0.1s ease-in-out;
+  &:hover {
+    background-color: $green-primary;
+  }
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  margin-bottom: 6em;
+}
+
+.red {
+  color: red;
+}

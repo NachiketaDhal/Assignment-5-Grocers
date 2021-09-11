@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 import Button from "./Button";
-import Navbar from "./Navbar";
+// import Navbar from "./Navbar";
 
 const Hero = () => {
   return (
     <Container>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="hero-section">
         <div className="hero-left-section">
           <h2>Welcome To Our Grocery Store</h2>

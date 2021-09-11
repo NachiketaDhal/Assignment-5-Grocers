@@ -6,7 +6,10 @@ import { ImUser } from "react-icons/im";
 
 const Navbar = () => {
   return (
-    <Nav className="navbar navbar-expand-lg navbar-light">
+    <Nav
+      className="navbar navbar-expand-lg navbar-light"
+      style={{ backgroundColor: "#e4edef" }}
+    >
       <NavLink className="navbar-brand" to="/">
         <img
           src="https://elementorpress.com/templatekit-pro/layout17/wp-content/uploads/2021/07/cropped-Logo-192x192.png"
@@ -83,8 +86,8 @@ const Navbar = () => {
 };
 
 const Nav = styled.nav`
-  /* padding: 4em 15em; */
-  padding: 4em 0;
+  padding: 2em 15em;
+  /* padding: 4em 0; */
   justify-content: space-between;
   .navbar-brand {
     font-size: 3em;

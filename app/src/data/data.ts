@@ -33,6 +33,8 @@ export const heroImagePrimary =
 export const heroImageSecondary =
   "https://elementorpress.com/templatekit-pro/layout17/wp-content/uploads/2021/07/Footer-Img.png";
 
+export const apiUrl = "http://localhost:8000";
+
 export const products: IItem[] = [
   {
     _id: "1",

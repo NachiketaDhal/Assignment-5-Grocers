@@ -43,7 +43,7 @@ const Container = styled.section`
   padding: 0 15em;
   background-image: url("https://elementorpress.com/templatekit-pro/layout17/wp-content/uploads/2021/07/Home-banner-right-img.jpg");
   background-size: cover;
-  background-position: 3vw 0;
+  background-position: 3vw -15em;
   background-repeat: no-repeat;
 
   .hero-section {
@@ -56,7 +56,7 @@ const Container = styled.section`
       display: flex;
       flex-direction: column;
       gap: 2em;
-      padding: 6em 0;
+      padding: 12em 0;
       h2 {
         color: #9fcb22;
         font-size: 2.5em;

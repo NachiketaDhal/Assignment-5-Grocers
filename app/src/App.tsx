@@ -8,12 +8,14 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 import "./_app.scss";
 
 function App() {
   return (
     <main>
       <Router>
+        <ScrollToTop />
         <Navbar />
         <Switch>
           <Route path="/" component={Home} exact />

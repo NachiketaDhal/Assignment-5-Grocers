@@ -122,10 +122,11 @@ exports.isLoggedIn = async (req, res) => {
 
     const verifiedUser = jwt.verify(token, process.env.JWT_SECRET);
     const verifiedUserId = verifiedUser.user;
-    const user = await User.findOne({ _id: verifiedUserId });
+    const loggedInUser = await User.findOne({ _id: verifiedUserId });
+    // console.log(loggedInUser);
     res.json({
       status: true,
-      user,
+      loggedInUser,
     });
   } catch (err) {
     res.json({

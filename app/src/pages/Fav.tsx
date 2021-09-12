@@ -1,52 +1,40 @@
 import React from "react";
-import styled from "styled-components";
 import { AiFillHeart } from "react-icons/ai";
+import styled from "styled-components";
 
-import { useGlobalContext } from "../context/context";
 import Loading from "../components/Loading";
+import { useGlobalContext } from "../context/context";
 
-const AllProducts = () => {
-  const {
-    newState,
-    toggleFav,
-    checkFav,
-    checkCart,
-    toggleCart,
-    // handleSearchChange,
-  } = useGlobalContext();
+const Fav = () => {
+  const { newState, checkFav, toggleFav, checkCart, toggleCart } =
+    useGlobalContext();
 
-  const { products, loading, searchInputValue, searchedProducts } = newState;
+  const { loading, loginStatus, fav } = newState;
 
   if (loading) {
     return <Loading />;
   }
 
-  // if (searchedProducts?.length < 1) {
-  //   return (
-  //     <div className="fill-height">
-  //       <h1>No Products found...</h1>
-  //     </div>
-  //   );
-  // }
+  if (!loginStatus.status) {
+    return (
+      <div className="fill-height">
+        <h1>Please Login to see Favourites</h1>
+      </div>
+    );
+  }
+
+  if (fav?.length < 1) {
+    return (
+      <div className="fill-height">
+        <h1>Favourites is currently empty</h1>
+      </div>
+    );
+  }
 
   return (
     <Container>
-      {/* <div className="op-container">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchInputValue}
-          onChange={handleSearchChange}
-        />
-        <select id="sort" name="sort" className="sort-input">
-          <option value="price-lowest">Price (Lowest)</option>
-          <option value="price-highest">Price (Highest)</option>
-          <option value="name-a">Name (A-Z)</option>
-          <option value="name-z">Name (Z-A)</option>
-        </select>
-      </div> */}
       <div className="card-container">
-        {products.map((product) => (
+        {fav.map((product) => (
           <div className="card" key={product._id}>
             <div
               className={`heart ${checkFav(product._id) ? "red" : ""}`}
@@ -76,21 +64,10 @@ const AllProducts = () => {
 
 const Container = styled.section`
   padding: 4em 15em;
-  .op-container {
-    margin: 4em 0;
-    display: flex;
-    justify-content: center;
-    gap: 4em;
-    input {
-      padding: 0.5em;
-      font-size: 1.4em;
-    }
-    select {
-      padding: 0.7em;
-      font-size: 1.4em;
-    }
-  }
-
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  gap: 9em;
   .card-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -141,4 +118,4 @@ const Container = styled.section`
   }
 `;
 
-export default AllProducts;
+export default Fav;

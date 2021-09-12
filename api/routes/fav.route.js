@@ -10,8 +10,8 @@ const authenticated = require("../middlewares/auth");
 
 router.get("/fav", authenticated, getAllFavProducts);
 
-router.post("/fav/:id", authenticated, addToFav);
-router.delete("/fav/:id", authenticated, removeFromFav);
+router.get("/fav/add/:id", authenticated, addToFav);
+router.get("/fav/remove/:id", authenticated, removeFromFav);
 
 // router.route("/fav/:id").post(addToFav).delete(removeFromFav);
 

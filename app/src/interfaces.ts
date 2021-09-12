@@ -4,8 +4,66 @@ export interface IItem {
   price: number;
   image: string;
   description?: string;
-  fav: boolean;
-  cart: boolean;
+}
+
+export interface IUser {
+  _id: string;
+  username: string;
+  password: string;
+  role?: "user" | "admin";
+  fav: IItem[];
+  cart: IItem[];
+}
+
+export type IType =
+  | "FETCH_ALL_PRODUCTS"
+  | "FETCH_CART_PRODUCTS"
+  | "FETCH_FAV_PRODUCTS"
+  | "SET_LOADING_TRUE"
+  | "SET_LOADING_FALSE"
+  | "ADD_TO_CART"
+  | "REMOVE_FROM_CART"
+  | "ADD_TO_FAV"
+  | "TOGGLE_FAV"
+  | "REMOVE_FROM_FAV"
+  | "HANDLE_FORM_INPUT_CHANGE"
+  | "HANDLE_SEARCH_INPUT_CHANGE"
+  | "SEARCH_PRODUCTS"
+  | "EMPTY_FORM_INPUT_FIELD"
+  | "UPDATE_LOGIN_STATE_STATUS"
+  | "ADMIN_ADD_PRODUCT"
+  | "ADMIN_DELETE_PRODUCT";
+
+export interface IState {
+  loginStatus: { status: boolean; loggedInUser?: IUser };
+  loading: boolean;
+  products: IItem[];
+  searchedProducts: IItem[];
+  sortedProducts: IItem[];
+  cart: IItem[];
+  fav: IItem[];
+  formInputValue: { username: string; password: string };
+  searchInputValue: string;
+}
+
+export interface IValue {
+  newState: IState;
+  dispatch: React.Dispatch<IAction>;
+  handleChange: any;
+  login: any;
+  signup: any;
+  logout: any;
+  checkFav: any;
+  toggleFav: any;
+  checkCart: any;
+  toggleCart: any;
+  fetchAllProducts: any;
+  // handleSearchChange: any;
+}
+
+export interface IAction {
+  type: IType;
+  payload?: any;
 }
 
 export interface IUser {
@@ -22,5 +80,12 @@ export interface IButton {
 
 export interface IFormProps {
   props: string[];
-  type: string;
+  type: "Login" | "Signup";
+}
+
+export interface IRoute {
+  children: any;
+  rest?: any;
+  path?: any;
+  exact?: any;
 }

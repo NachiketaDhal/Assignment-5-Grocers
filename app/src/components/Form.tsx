@@ -2,19 +2,34 @@ import React from "react";
 import styled from "styled-components";
 
 import { IFormProps } from "../interfaces";
+import { useGlobalContext } from "../context/context";
 
 const Form = ({ props, type }: IFormProps) => {
+  const { newState, handleChange, login, signup } = useGlobalContext();
+
+  const { formInputValue } = newState;
+
   return (
     <Container>
       <div className="form-container">
         <div className="form-heading">
           <h2>{type}</h2>
         </div>
-        <form>
+        <form onSubmit={type === "Login" ? login : signup}>
           {props.map((p, i) => (
             <div key={i}>
               <label>{p}</label> <br />
-              <input type="text" placeholder={`Enter your ${p}`} /> <br />
+              <input
+                type="text"
+                placeholder={`Enter your ${p}`}
+                name={p}
+                value={
+                  p === "username"
+                    ? formInputValue.username
+                    : formInputValue.password
+                }
+                onChange={handleChange}
+              />
             </div>
           ))}
           <button>{type}</button>

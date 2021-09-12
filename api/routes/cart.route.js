@@ -10,8 +10,8 @@ const authenticated = require("../middlewares/auth");
 
 router.get("/cart", authenticated, getAllCartProducts);
 
-router.post("/cart/:id", authenticated, addToCart);
-router.delete("/cart/:id", authenticated, removeFromCart);
+router.get("/cart/add/:id", authenticated, addToCart);
+router.get("/cart/remove/:id", authenticated, removeFromCart);
 
 // router.route("/cart/:id").post(addToCart).delete(removeFromCart);
 

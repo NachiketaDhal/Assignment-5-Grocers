@@ -64,6 +64,19 @@ body {
   }
 }
 
+.colored3 {
+  background-color: $green-primary;
+  color: #ffffff;
+  padding: 0.7em 3em;
+  font-size: 1.4em;
+  border: none;
+  text-decoration: none;
+  transition: all 0.1s ease-in-out;
+  &:hover {
+    background-color: $green-secondary;
+  }
+}
+
 .btn-container {
   display: flex;
   justify-content: center;
@@ -73,4 +86,10 @@ body {
 
 .red {
   color: red;
+}
+
+.fill-height {
+  min-height: 70vh;
+  display: grid;
+  place-items: center;
 }

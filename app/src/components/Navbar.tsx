@@ -4,7 +4,14 @@ import { NavLink } from "react-router-dom";
 import { IoCart } from "react-icons/io5";
 import { ImUser } from "react-icons/im";
 
+import { useGlobalContext } from "../context/context";
+
 const Navbar = () => {
+  const { newState, logout } = useGlobalContext();
+
+  const { loginStatus, cart } = newState;
+  const { status, loggedInUser } = loginStatus;
+
   return (
     <Nav
       className="navbar navbar-expand-lg navbar-light"
@@ -54,29 +61,60 @@ const Navbar = () => {
           <li className="nav-item">
             <NavLink
               className="nav-link"
-              to="/login"
-              activeStyle={{ color: "#9fcb22" }}
-              exact
-            >
-              Login
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink
-              className="nav-link"
-              to="/signup"
+              to="/fav"
               activeStyle={{ color: "#9fcb22" }}
             >
-              Signup
+              Favourites
             </NavLink>
           </li>
+          {status && loggedInUser?.role === "admin" && (
+            <li className="nav-item">
+              <NavLink
+                className="nav-link"
+                to="/admin"
+                activeStyle={{ color: "#9fcb22" }}
+              >
+                Admin
+              </NavLink>
+            </li>
+          )}
+          {!status && (
+            <li className="nav-item">
+              <NavLink
+                className="nav-link"
+                to="/login"
+                activeStyle={{ color: "#9fcb22" }}
+                exact
+              >
+                Login
+              </NavLink>
+            </li>
+          )}
+          {!status && (
+            <li className="nav-item">
+              <NavLink
+                className="nav-link"
+                to="/signup"
+                activeStyle={{ color: "#9fcb22" }}
+              >
+                Signup
+              </NavLink>
+            </li>
+          )}
+          {status && (
+            <li className="nav-item" onClick={logout}>
+              <span className="nav-link">Logout</span>
+            </li>
+          )}
           <li className="nav-icon-container">
-            <NavLink to="/" className="cart">
-              <ImUser />
-            </NavLink>
+            {status && (
+              <NavLink to="/me" className="cart">
+                <ImUser />
+              </NavLink>
+            )}
             <NavLink to="/cart" className="cart">
               <IoCart />
-              <div className="amount">0</div>
+              <div className="amount">{cart?.length || 0}</div>
             </NavLink>
           </li>
         </ul>
@@ -106,6 +144,9 @@ const Nav = styled.nav`
       margin: 0px !important;
       gap: 2em;
       .nav-item {
+        span {
+          cursor: pointer;
+        }
         .nav-link {
           color: #323232;
           font-size: 1.8em;

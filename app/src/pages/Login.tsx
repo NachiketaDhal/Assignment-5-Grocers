@@ -5,7 +5,7 @@ import Form from "../components/Form";
 const Login = () => {
   return (
     <Fragment>
-      <Form props={["Username", "Password"]} type="Login" />
+      <Form props={["username", "password"]} type="Login" />
     </Fragment>
   );
 };

@@ -13,14 +13,6 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  fav: {
-    type: Boolean,
-    required: true,
-  },
-  cart: {
-    type: Boolean,
-    required: true,
-  },
 });
 
 const Product = mongoose.model("Product", productSchema);

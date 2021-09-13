@@ -24,6 +24,8 @@ export type IType =
   | "ADD_TO_CART"
   | "REMOVE_FROM_CART"
   | "ADD_TO_FAV"
+  | "SHOW_ALERT"
+  | "HIDE_ALERT"
   | "TOGGLE_FAV"
   | "REMOVE_FROM_FAV"
   | "HANDLE_FORM_INPUT_CHANGE"
@@ -44,6 +46,7 @@ export interface IState {
   fav: IItem[];
   formInputValue: { username: string; password: string };
   searchInputValue: string;
+  alert: { status: boolean; text: string; color: string };
 }
 
 export interface IValue {
@@ -58,6 +61,7 @@ export interface IValue {
   checkCart: any;
   toggleCart: any;
   fetchAllProducts: any;
+  showAlert: (message: string, color: string) => void;
   // handleSearchChange: any;
 }
 

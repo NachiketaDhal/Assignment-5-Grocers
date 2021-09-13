@@ -1,16 +1,17 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
-import { useHistory } from "react-router";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router";
 import styled from "styled-components";
 import axios from "axios";
 
 import { apiUrlProducts } from "../data/data";
 import { useGlobalContext } from "../context/context";
+import { IItem } from "../interfaces";
 
-const AdminAdd = () => {
+const AdminUpdateForm = () => {
   const [inputValues, setInputValues] = useState({
     pName: "",
     image: "",
-    price: "",
+    price: 0,
   });
 
   const { pName, image, price } = inputValues;
@@ -18,21 +19,36 @@ const AdminAdd = () => {
   const { fetchAllProducts, showAlert } = useGlobalContext();
 
   const history = useHistory();
+  const { id } = useParams<any>();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputValues({ ...inputValues, [name]: value });
   };
 
+  const getProductById = async () => {
+    try {
+      const { data }: { data: { product: IItem } } = await axios.get(
+        `${apiUrlProducts}/${id}`
+      );
+      const { image, name, price } = data.product;
+      setInputValues({ pName: name, image, price });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getProductById();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleSubmit = async (e: FormEvent) => {
     try {
       e.preventDefault();
-      if (!pName || !image || !price) {
-        showAlert("Please fill all the fields", "red");
-        return;
-      }
-      const { data } = await axios.post(
-        apiUrlProducts,
+      if (!pName || !image || !price) return;
+      const { data } = await axios.put(
+        `${apiUrlProducts}/${id}`,
         {
           name: pName,
           image,
@@ -41,8 +57,8 @@ const AdminAdd = () => {
         { withCredentials: true }
       );
       // console.log(data);
-      setInputValues({ pName: "", image: "", price: "" });
-      showAlert("Item added successfully", "green");
+      setInputValues({ pName: "", image: "", price: 0 });
+      showAlert("Item updated successfully", "green");
       await fetchAllProducts();
       setTimeout(() => {
         history.push("/products");
@@ -87,7 +103,7 @@ const AdminAdd = () => {
             onChange={handleChange}
           />
           <br />
-          <button>Add Product</button>
+          <button>Update Product</button>
         </form>
       </div>
     </Container>
@@ -101,4 +117,4 @@ const Container = styled.section`
   place-items: center;
 `;
 
-export default AdminAdd;
+export default AdminUpdateForm;

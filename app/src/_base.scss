@@ -93,3 +93,109 @@ body {
   display: grid;
   place-items: center;
 }
+
+// Form
+.form-container {
+  background-color: #9fcb22;
+  padding: 3em;
+  border-radius: 0.3em;
+  box-shadow: 2px 5px 12px rgba(0, 0, 0, 0.3);
+  .form-heading {
+    text-align: center;
+    h2 {
+      font-size: 2em;
+      margin-bottom: 1em;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+  }
+  form {
+    label {
+      font-size: 1.5em;
+    }
+    input {
+      width: 20em;
+      font-size: 1.4em;
+      padding: 0.5em;
+      margin-bottom: 1em;
+      border-radius: 0.3em;
+      border: none;
+      outline: none;
+    }
+    button {
+      border: none;
+      color: #ffffff;
+      background-color: #14462e;
+      font-size: 1.5em;
+      padding: 0.5em;
+      border-radius: 0.3em;
+      width: 100%;
+      margin-top: 1em;
+    }
+  }
+}
+
+// Product cards
+.op-container {
+  margin: 4em 0;
+  display: flex;
+  justify-content: center;
+  gap: 4em;
+  input {
+    padding: 0.5em;
+    font-size: 1.4em;
+  }
+  select {
+    padding: 0.7em;
+    font-size: 1.4em;
+  }
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5em;
+  .card {
+    background-color: #e4edef;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3em;
+    border: 1px solid transparent;
+    padding: 3em 0;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      border: 1px solid #9fcb22;
+    }
+    .heart {
+      cursor: pointer;
+      position: absolute;
+      top: 0.5em;
+      right: 0.5em;
+      svg {
+        font-size: 2em;
+      }
+    }
+    .img-container {
+      img {
+        width: 21.5em;
+      }
+    }
+    .product-details {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .name {
+        font-size: 2.5em;
+        font-weight: 600;
+        letter-spacing: 1.3px;
+      }
+      .price {
+        color: #9fcb22;
+        font-weight: 600;
+        letter-spacing: 1.3px;
+      }
+    }
+  }
+}

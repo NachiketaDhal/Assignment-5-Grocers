@@ -14,6 +14,9 @@ const Admin = () => {
         <Link to="/admin/delete">
           <Button text="Delete a Product" type="transparent" />
         </Link>
+        <Link to="/admin/update">
+          <Button text="Update a Product" type="colored" />
+        </Link>
       </div>
     </Container>
   );

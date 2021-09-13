@@ -1,125 +1,131 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { IoCart } from "react-icons/io5";
 import { ImUser } from "react-icons/im";
 
 import { useGlobalContext } from "../context/context";
+import Alert from "./Alert";
 
 const Navbar = () => {
   const { newState, logout } = useGlobalContext();
 
-  const { loginStatus, cart } = newState;
+  const { loginStatus, cart, alert } = newState;
   const { status, loggedInUser } = loginStatus;
 
-  return (
-    <Nav
-      className="navbar navbar-expand-lg navbar-light"
-      style={{ backgroundColor: "#e4edef" }}
-    >
-      <NavLink className="navbar-brand" to="/">
-        <img
-          src="https://elementorpress.com/templatekit-pro/layout17/wp-content/uploads/2021/07/cropped-Logo-192x192.png"
-          alt="logo"
-          className="logo"
-        />
-        Grocers
-      </NavLink>
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
+  const { status: aStatus, color, text } = alert;
 
-      <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="mr-auto navbar-nav">
-          <li className="nav-item">
-            <NavLink
-              className="nav-link"
-              to="/"
-              activeStyle={{ color: "#9fcb22" }}
-              exact
-            >
-              Home
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink
-              className="nav-link"
-              to="/products"
-              activeStyle={{ color: "#9fcb22" }}
-            >
-              Store
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink
-              className="nav-link"
-              to="/fav"
-              activeStyle={{ color: "#9fcb22" }}
-            >
-              Favourites
-            </NavLink>
-          </li>
-          {status && loggedInUser?.role === "admin" && (
+  return (
+    <Fragment>
+      {aStatus && <Alert color={color} message={text} />}
+      <Nav
+        className="navbar navbar-expand-lg navbar-light"
+        style={{ backgroundColor: "#e4edef" }}
+      >
+        <NavLink className="navbar-brand" to="/">
+          <img
+            src="https://elementorpress.com/templatekit-pro/layout17/wp-content/uploads/2021/07/cropped-Logo-192x192.png"
+            alt="logo"
+            className="logo"
+          />
+          Grocers
+        </NavLink>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="mr-auto navbar-nav">
             <li className="nav-item">
               <NavLink
                 className="nav-link"
-                to="/admin"
-                activeStyle={{ color: "#9fcb22" }}
-              >
-                Admin
-              </NavLink>
-            </li>
-          )}
-          {!status && (
-            <li className="nav-item">
-              <NavLink
-                className="nav-link"
-                to="/login"
+                to="/"
                 activeStyle={{ color: "#9fcb22" }}
                 exact
               >
-                Login
+                Home
               </NavLink>
             </li>
-          )}
-          {!status && (
             <li className="nav-item">
               <NavLink
                 className="nav-link"
-                to="/signup"
+                to="/products"
                 activeStyle={{ color: "#9fcb22" }}
               >
-                Signup
+                Store
               </NavLink>
             </li>
-          )}
-          {status && (
-            <li className="nav-item" onClick={logout}>
-              <span className="nav-link">Logout</span>
-            </li>
-          )}
-          <li className="nav-icon-container">
-            {status && (
-              <NavLink to="/me" className="cart">
-                <ImUser />
+            <li className="nav-item">
+              <NavLink
+                className="nav-link"
+                to="/fav"
+                activeStyle={{ color: "#9fcb22" }}
+              >
+                Favourites
               </NavLink>
+            </li>
+            {status && loggedInUser?.role === "admin" && (
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link"
+                  to="/admin"
+                  activeStyle={{ color: "#9fcb22" }}
+                >
+                  Admin
+                </NavLink>
+              </li>
             )}
-            <NavLink to="/cart" className="cart">
-              <IoCart />
-              <div className="amount">{cart?.length || 0}</div>
-            </NavLink>
-          </li>
-        </ul>
-      </div>
-    </Nav>
+            {!status && (
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link"
+                  to="/login"
+                  activeStyle={{ color: "#9fcb22" }}
+                  exact
+                >
+                  Login
+                </NavLink>
+              </li>
+            )}
+            {!status && (
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link"
+                  to="/signup"
+                  activeStyle={{ color: "#9fcb22" }}
+                >
+                  Signup
+                </NavLink>
+              </li>
+            )}
+            {status && (
+              <li className="nav-item" onClick={logout}>
+                <span className="nav-link">Logout</span>
+              </li>
+            )}
+            <li className="nav-icon-container">
+              {status && (
+                <NavLink to="/me" className="cart">
+                  <ImUser />
+                </NavLink>
+              )}
+              <NavLink to="/cart" className="cart">
+                <IoCart />
+                <div className="amount">{cart?.length || 0}</div>
+              </NavLink>
+            </li>
+          </ul>
+        </div>
+      </Nav>
+    </Fragment>
   );
 };
 

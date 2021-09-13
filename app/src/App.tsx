@@ -15,9 +15,11 @@ import User from "./pages/User";
 import Admin from "./pages/Admin";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
-import "./_app.scss";
 import AdminAdd from "./pages/AdminAdd";
 import AdminDelete from "./pages/AdminDelete";
+import AdminUpdate from "./pages/AdminUpdate";
+import "./_app.scss";
+import AdminUpdateForm from "./pages/AdminUpdateForm";
 
 function App() {
   // const { newState } = useGlobalContext();
@@ -50,6 +52,12 @@ function App() {
           </AdminRoute>
           <AdminRoute path="/admin/delete" exact>
             <AdminDelete />
+          </AdminRoute>
+          <AdminRoute path="/admin/update" exact>
+            <AdminUpdate />
+          </AdminRoute>
+          <AdminRoute path="/admin/update/:id" exact>
+            <AdminUpdateForm />
           </AdminRoute>
           {/* {!status ? (
             <Route path="/login" component={Login} exact />

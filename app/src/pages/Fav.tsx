@@ -68,54 +68,6 @@ const Container = styled.section`
   display: flex;
   flex-direction: column;
   gap: 9em;
-  .card-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 5em;
-    .card {
-      background-color: #e4edef;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3em;
-      border: 1px solid transparent;
-      padding: 3em 0;
-      position: relative;
-      transition: all 0.2s ease-in-out;
-      &:hover {
-        border: 1px solid #9fcb22;
-      }
-      .heart {
-        cursor: pointer;
-        position: absolute;
-        top: 0.5em;
-        right: 0.5em;
-        svg {
-          font-size: 2em;
-        }
-      }
-      .img-container {
-        img {
-          width: 21.5em;
-        }
-      }
-      .product-details {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        .name {
-          font-size: 2.5em;
-          font-weight: 600;
-          letter-spacing: 1.3px;
-        }
-        .price {
-          color: #9fcb22;
-          font-weight: 600;
-          letter-spacing: 1.3px;
-        }
-      }
-    }
-  }
 `;
 
 export default Fav;

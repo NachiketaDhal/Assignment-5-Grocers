@@ -20,7 +20,7 @@ const Form = ({ props, type }: IFormProps) => {
             <div key={i}>
               <label>{p}</label> <br />
               <input
-                type="text"
+                type={`${p === "password" ? "password" : "text"}`}
                 placeholder={`Enter your ${p}`}
                 name={p}
                 value={

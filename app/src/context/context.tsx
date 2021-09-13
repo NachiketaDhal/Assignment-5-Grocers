@@ -16,34 +16,34 @@ import { IState, IValue } from "../interfaces";
 
 import reducer from "../reducers/reducer";
 
-let lCart;
-let lFav;
+// let lCart;
+// let lFav;
 
-function setCart() {
-  if (
-    localStorage.getItem("loginStatus") &&
-    JSON.parse(String(localStorage.getItem("loginStatus"))).status
-  ) {
-    lCart = JSON.parse(String(localStorage.getItem("loginStatus"))).loggedInUser
-      .cart;
-  } else {
-    lCart = [];
-  }
-  return lCart;
-}
+// function setCart() {
+//   if (
+//     localStorage.getItem("loginStatus") &&
+//     JSON.parse(String(localStorage.getItem("loginStatus"))).status
+//   ) {
+//     lCart = JSON.parse(String(localStorage.getItem("loginStatus"))).loggedInUser
+//       .cart;
+//   } else {
+//     lCart = [];
+//   }
+//   return lCart;
+// }
 
-function setFav() {
-  if (
-    localStorage.getItem("loginStatus") &&
-    JSON.parse(String(localStorage.getItem("loginStatus"))).status
-  ) {
-    lFav = JSON.parse(String(localStorage.getItem("loginStatus"))).loggedInUser
-      .fav;
-  } else {
-    lFav = [];
-  }
-  return lFav;
-}
+// function setFav() {
+//   if (
+//     localStorage.getItem("loginStatus") &&
+//     JSON.parse(String(localStorage.getItem("loginStatus"))).status
+//   ) {
+//     lFav = JSON.parse(String(localStorage.getItem("loginStatus"))).loggedInUser
+//       .fav;
+//   } else {
+//     lFav = [];
+//   }
+//   return lFav;
+// }
 
 const initialState: IState = {
   loginStatus: JSON.parse(String(localStorage.getItem("loginStatus"))) || {
@@ -53,10 +53,11 @@ const initialState: IState = {
   products: [],
   searchedProducts: [],
   sortedProducts: [],
-  cart: setCart(),
-  fav: setFav(),
+  cart: [],
+  fav: [],
   formInputValue: { username: "", password: "" },
   searchInputValue: "",
+  alert: { status: false, color: "", text: "" },
 };
 
 const initialContextState: IValue = {
@@ -71,6 +72,7 @@ const initialContextState: IValue = {
   checkCart: function () {},
   toggleCart: function () {},
   fetchAllProducts: function () {},
+  showAlert: function (message: string, color: string) {},
   // handleSearchChange: function () {},
 };
 
@@ -84,11 +86,15 @@ const AppProvider = ({ children }: { children: any }) => {
       const { data } = await axios.get(`${apiUrlAuth}/isLoggedIn`, {
         withCredentials: true,
       });
-      console.log(data);
+      // console.log(data);
       dispatch({ type: "UPDATE_LOGIN_STATE_STATUS", payload: data });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
+  };
+
+  const showAlert = (message: string, color: string) => {
+    dispatch({ type: "SHOW_ALERT", payload: { message, color } });
   };
 
   const fetchAllProducts = async () => {
@@ -149,11 +155,13 @@ const AppProvider = ({ children }: { children: any }) => {
       await axios.get(`${apiUrlFav}/remove/${_id}`, {
         withCredentials: true,
       });
+      showAlert("Item removed from favourites", "red");
       isLoggedIn();
     } else {
       await axios.get(`${apiUrlFav}/add/${_id}`, {
         withCredentials: true,
       });
+      showAlert("Item added to favourites", "green");
       isLoggedIn();
     }
   };
@@ -173,11 +181,13 @@ const AppProvider = ({ children }: { children: any }) => {
       await axios.get(`${apiUrlCart}/remove/${_id}`, {
         withCredentials: true,
       });
+      showAlert("Item removed from cart", "red");
       isLoggedIn();
     } else {
       await axios.get(`${apiUrlCart}/add/${_id}`, {
         withCredentials: true,
       });
+      showAlert("Item added to cart", "green");
       isLoggedIn();
     }
   };
@@ -199,52 +209,55 @@ const AppProvider = ({ children }: { children: any }) => {
   // const searchProducts = () => {
   // };
 
+  const changeProductAndUserStateAfterAuth = async () => {
+    // setTimeout(async () => {
+    await isLoggedIn();
+    await fetchCartProducts();
+    await fetchFavProducts();
+    // }, 2500);
+  };
+
   const login = async (e: FormEvent) => {
     try {
       e.preventDefault();
-      if (
-        !newState.formInputValue.username ||
-        !newState.formInputValue.password
-      ) {
-        return;
-      }
 
-      await axios.post(`${apiUrlAuth}/login`, newState.formInputValue, {
-        withCredentials: true,
-      });
+      const { data } = await axios.post(
+        `${apiUrlAuth}/login`,
+        newState.formInputValue,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(data);
       dispatch({ type: "EMPTY_FORM_INPUT_FIELD" });
-      await isLoggedIn();
-      await fetchCartProducts();
-      await fetchFavProducts();
-    } catch (err) {
-      console.log(err);
+      showAlert(data.message, "green");
+
+      changeProductAndUserStateAfterAuth();
+    } catch (err: any) {
+      showAlert(err.response.data.message, "red");
+      // console.log(err.response.data);
     }
   };
 
   const signup = async (e: FormEvent) => {
     try {
       e.preventDefault();
-      if (
-        !newState.formInputValue.username ||
-        !newState.formInputValue.password
-      ) {
-        return;
-      }
 
-      const signedUpUserUser = await axios.post(
+      const { data } = await axios.post(
         `${apiUrlAuth}/signup`,
         newState.formInputValue,
         {
           withCredentials: true,
         }
       );
-      console.log(signedUpUserUser.data);
+      // console.log(data);
       dispatch({ type: "EMPTY_FORM_INPUT_FIELD" });
-      await isLoggedIn();
-      await fetchCartProducts();
-      await fetchFavProducts();
-    } catch (err) {
-      console.log(err);
+      showAlert(data.message, "green");
+
+      changeProductAndUserStateAfterAuth();
+    } catch (err: any) {
+      showAlert(err.response.data.message, "red");
+      // console.log(err.response.data);
     }
   };
 
@@ -253,7 +266,6 @@ const AppProvider = ({ children }: { children: any }) => {
       await axios.get(`${apiUrlAuth}/logout`, {
         withCredentials: true,
       });
-      await isLoggedIn();
       dispatch({
         type: "FETCH_CART_PRODUCTS",
         payload: [],
@@ -262,8 +274,12 @@ const AppProvider = ({ children }: { children: any }) => {
         type: "FETCH_FAV_PRODUCTS",
         payload: [],
       });
-    } catch (err) {
-      console.log(err);
+
+      showAlert("Logged out successfully", "green");
+      await isLoggedIn();
+    } catch (err: any) {
+      // console.log(err.response.data);
+      showAlert("Something went wrong", "red");
     }
   };
 
@@ -274,9 +290,18 @@ const AppProvider = ({ children }: { children: any }) => {
   }, []);
 
   useEffect(() => {
-    setFav();
+    // setFav();
+    isLoggedIn();
+
     // handleSearchChange();
   });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch({ type: "HIDE_ALERT" });
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, [newState.alert]);
 
   return (
     <AppContext.Provider
@@ -286,6 +311,7 @@ const AppProvider = ({ children }: { children: any }) => {
         handleChange,
         // handleSearchChange,
         fetchAllProducts,
+        showAlert,
         login,
         signup,
         logout,

@@ -11,7 +11,7 @@ const reducer = (currentState: IState, action: IAction): IState => {
   }
 
   if (type === "FETCH_ALL_PRODUCTS") {
-    return { ...currentState, products: payload };
+    return { ...currentState, products: payload, searchedProducts: payload };
   }
 
   if (type === "FETCH_CART_PRODUCTS") {
@@ -53,7 +53,14 @@ const reducer = (currentState: IState, action: IAction): IState => {
   }
 
   if (type === "SEARCH_PRODUCTS") {
-    return { ...currentState, searchedProducts: payload };
+    let dummyProducts = [...currentState.products];
+    dummyProducts = dummyProducts.filter(
+      (product) =>
+        product.name
+          .toLowerCase()
+          .indexOf(currentState.searchInputValue.toLowerCase().trim()) > -1
+    );
+    return { ...currentState, searchedProducts: dummyProducts };
   }
 
   if (type === "EMPTY_FORM_INPUT_FIELD") {
@@ -67,6 +74,20 @@ const reducer = (currentState: IState, action: IAction): IState => {
       loginStatus: payload,
       cart: payload?.loggedInUser?.cart,
       fav: payload?.loggedInUser?.fav,
+    };
+  }
+
+  if (type === "SHOW_ALERT") {
+    return {
+      ...currentState,
+      alert: { status: true, color: payload.color, text: payload.message },
+    };
+  }
+
+  if (type === "HIDE_ALERT") {
+    return {
+      ...currentState,
+      alert: { status: false, color: "", text: "" },
     };
   }
 

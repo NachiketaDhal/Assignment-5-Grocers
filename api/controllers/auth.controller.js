@@ -26,7 +26,7 @@ exports.signup = async (req, res) => {
     if (!username || !password) {
       return res
         .status(400)
-        .json({ errorMessage: "Please enter all required fields." });
+        .json({ message: "Please enter all required fields." });
     }
 
     const foundUser = await User.findOne({ username });
@@ -71,7 +71,7 @@ exports.login = async (req, res) => {
     if (!username || !password) {
       return res
         .status(400)
-        .json({ errorMessage: "Please enter all required fields." });
+        .json({ message: "Please enter all required fields." });
     }
 
     const foundUser = await User.findOne({ username });
@@ -106,8 +106,13 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = async (req, res) => {
-  res.clearCookie("token").send();
-  // res.cookie("token", "").send();
+  try {
+    res.clearCookie("token").send();
+    // res.cookie("token", "").send();
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (err) {
+    res.status(400).json({ message: "Something went wrong" });
+  }
 };
 
 exports.isLoggedIn = async (req, res) => {

@@ -27,7 +27,8 @@ const AdminDelete = () => {
       showAlert("Item deleted successfully", "red");
       await fetchAllProducts();
     } catch (err) {
-      console.log(err);
+      // console.log(err);
+      showAlert("Something went wrong, try reloading", "red");
     }
   };
 

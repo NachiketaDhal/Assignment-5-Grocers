@@ -68,7 +68,7 @@ const reducer = (currentState: IState, action: IAction): IState => {
   }
 
   if (type === "UPDATE_LOGIN_STATE_STATUS") {
-    localStorage.setItem("loginStatus", JSON.stringify(payload));
+    // localStorage.setItem("loginStatus", JSON.stringify(payload));
     return {
       ...currentState,
       loginStatus: payload,

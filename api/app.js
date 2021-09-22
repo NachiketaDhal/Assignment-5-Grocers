@@ -32,7 +32,10 @@ app.use("/api", favRoute);
 app.use("/api", authRoute);
 
 mongoose
-  .connect(process.env.DATABASE)
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("DB CONNECTED 🔥"))
   .catch((err) => console.log(err));
 

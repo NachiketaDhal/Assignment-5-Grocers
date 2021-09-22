@@ -31,8 +31,9 @@ export const heroImagePrimary =
 export const heroImageSecondary =
   "https://elementorpress.com/templatekit-pro/layout17/wp-content/uploads/2021/07/Footer-Img.png";
 
-export const baseApiUrl = "http://localhost:8000";
-export const apiUrlProducts = "http://localhost:8000/api/products";
-export const apiUrlCart = "http://localhost:8000/api/cart";
-export const apiUrlFav = "http://localhost:8000/api/fav";
-export const apiUrlAuth = "http://localhost:8000/api/auth";
+export const baseApiUrl = "https://grocers-assignment.herokuapp.com";
+// export const baseApiUrl = "http://localhost:8000";
+export const apiUrlProducts = `${baseApiUrl}/api/products`;
+export const apiUrlCart = `${baseApiUrl}/api/cart`;
+export const apiUrlFav = `${baseApiUrl}/api/fav`;
+export const apiUrlAuth = `${baseApiUrl}/api/auth`;

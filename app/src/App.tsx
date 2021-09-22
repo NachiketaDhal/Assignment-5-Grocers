@@ -20,6 +20,7 @@ import AdminDelete from "./pages/AdminDelete";
 import AdminUpdate from "./pages/AdminUpdate";
 import "./_app.scss";
 import AdminUpdateForm from "./pages/AdminUpdateForm";
+import Error from "./pages/Error";
 
 function App() {
   // const { newState } = useGlobalContext();
@@ -34,6 +35,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route path="/" component={Home} exact />
+          <Route path="/home" component={Home} exact />
           <Route path="/products" component={AllProducts} exact />
           <Route path="/cart" component={Cart} exact />
           <Route path="/fav" component={Fav} exact />
@@ -72,7 +74,7 @@ function App() {
           {/* {status && loggedInUser?.role === "admin" && (
             <Route path="/admin" component={Admin} exact />
           )} */}
-          {/* <Route path="*" component={Error} exact /> */}
+          <Route path="*" component={Error} />
         </Switch>
         <Footer />
       </Router>

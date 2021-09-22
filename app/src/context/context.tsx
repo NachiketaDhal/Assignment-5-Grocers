@@ -1,6 +1,7 @@
 import React, {
   ChangeEvent,
   FormEvent,
+  useCallback,
   useContext,
   useEffect,
   useReducer,
@@ -46,9 +47,12 @@ import reducer from "../reducers/reducer";
 // }
 
 const initialState: IState = {
-  loginStatus: JSON.parse(String(localStorage.getItem("loginStatus"))) || {
+  loginStatus: {
     status: false,
   },
+  // loginStatus: JSON.parse(String(localStorage.getItem("loginStatus"))) || {
+  //   status: false,
+  // },
   loading: false,
   products: [],
   searchedProducts: [],
@@ -119,8 +123,8 @@ const AppProvider = ({ children }: { children: any }) => {
         payload: fetchedCartProducts.data.cartProducts,
       });
       dispatch({ type: "SET_LOADING_FALSE" });
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      console.log(err.response);
     }
   };
 
@@ -135,8 +139,8 @@ const AppProvider = ({ children }: { children: any }) => {
         payload: fetchedFavProducts.data.favProducts,
       });
       dispatch({ type: "SET_LOADING_FALSE" });
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      console.log(err.response);
     }
   };
 
@@ -151,18 +155,26 @@ const AppProvider = ({ children }: { children: any }) => {
   };
 
   const toggleFav = async (_id: string) => {
-    if (checkFav(_id)) {
-      await axios.get(`${apiUrlFav}/remove/${_id}`, {
-        withCredentials: true,
-      });
-      showAlert("Item removed from favourites", "red");
-      isLoggedIn();
-    } else {
-      await axios.get(`${apiUrlFav}/add/${_id}`, {
-        withCredentials: true,
-      });
-      showAlert("Item added to favourites", "green");
-      isLoggedIn();
+    try {
+      if (!newState.loginStatus.status) {
+        showAlert("Please Login to do this operation", "red");
+        return;
+      }
+      if (checkFav(_id)) {
+        await axios.get(`${apiUrlFav}/remove/${_id}`, {
+          withCredentials: true,
+        });
+        showAlert("Item removed from favourites", "red");
+        isLoggedIn();
+      } else {
+        await axios.get(`${apiUrlFav}/add/${_id}`, {
+          withCredentials: true,
+        });
+        showAlert("Item added to favourites", "green");
+        isLoggedIn();
+      }
+    } catch (err) {
+      showAlert("Something went wrong, please reload", "red");
     }
   };
 
@@ -177,18 +189,26 @@ const AppProvider = ({ children }: { children: any }) => {
   };
 
   const toggleCart = async (_id: string) => {
-    if (checkCart(_id)) {
-      await axios.get(`${apiUrlCart}/remove/${_id}`, {
-        withCredentials: true,
-      });
-      showAlert("Item removed from cart", "red");
-      isLoggedIn();
-    } else {
-      await axios.get(`${apiUrlCart}/add/${_id}`, {
-        withCredentials: true,
-      });
-      showAlert("Item added to cart", "green");
-      isLoggedIn();
+    try {
+      if (!newState.loginStatus.status) {
+        showAlert("Please Login to do this operation", "red");
+        return;
+      }
+      if (checkCart(_id)) {
+        await axios.get(`${apiUrlCart}/remove/${_id}`, {
+          withCredentials: true,
+        });
+        showAlert("Item removed from cart", "red");
+        isLoggedIn();
+      } else {
+        await axios.get(`${apiUrlCart}/add/${_id}`, {
+          withCredentials: true,
+        });
+        showAlert("Item added to cart", "green");
+        isLoggedIn();
+      }
+    } catch (err: any) {
+      showAlert("Something went wrong, please reload", "red");
     }
   };
 
@@ -197,71 +217,69 @@ const AppProvider = ({ children }: { children: any }) => {
     dispatch({ type: "HANDLE_FORM_INPUT_CHANGE", payload: { name, value } });
   };
 
-  // const handleSearchChange = (e: any = undefined) => {
-  //   let tempProducts = [...newState.products];
-  //   dispatch({ type: "HANDLE_SEARCH_INPUT_CHANGE", payload: e.target.value });
-  //   tempProducts = tempProducts.filter(
-  //     (product) => product.name.indexOf(newState.searchInputValue.trim()) > -1
-  //   );
-  //   dispatch({ type: "SEARCH_PRODUCTS", payload: tempProducts });
-  // };
-
-  // const searchProducts = () => {
-  // };
-
-  const changeProductAndUserStateAfterAuth = async () => {
+  const changeProductAndUserStateAfterAuth = useCallback(async () => {
     // setTimeout(async () => {
     await isLoggedIn();
+    if (!newState.loginStatus.status) {
+      return;
+    }
     await fetchCartProducts();
     await fetchFavProducts();
     // }, 2500);
-  };
+  }, [newState.loginStatus.status]);
 
-  const login = async (e: FormEvent) => {
-    try {
-      e.preventDefault();
+  const login = useCallback(
+    async (e: FormEvent) => {
+      try {
+        e.preventDefault();
 
-      const { data } = await axios.post(
-        `${apiUrlAuth}/login`,
-        newState.formInputValue,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(data);
-      dispatch({ type: "EMPTY_FORM_INPUT_FIELD" });
-      showAlert(data.message, "green");
+        const { data } = await axios.post(
+          `${apiUrlAuth}/login`,
+          newState.formInputValue,
+          {
+            withCredentials: true,
+          }
+        );
+        // console.log(data);
+        dispatch({ type: "EMPTY_FORM_INPUT_FIELD" });
+        showAlert(data.message, "green");
 
-      changeProductAndUserStateAfterAuth();
-    } catch (err: any) {
-      showAlert(err.response.data.message, "red");
-      // console.log(err.response.data);
-    }
-  };
+        changeProductAndUserStateAfterAuth();
+      } catch (err: any) {
+        showAlert(err.response.data.message, "red");
+        // console.log(err.response.data);
+      }
+    },
+    [changeProductAndUserStateAfterAuth, newState.formInputValue]
+  );
 
-  const signup = async (e: FormEvent) => {
-    try {
-      e.preventDefault();
+  const signup = useCallback(
+    async (e: FormEvent) => {
+      try {
+        e.preventDefault();
 
-      const { data } = await axios.post(
-        `${apiUrlAuth}/signup`,
-        newState.formInputValue,
-        {
-          withCredentials: true,
-        }
-      );
-      // console.log(data);
-      dispatch({ type: "EMPTY_FORM_INPUT_FIELD" });
-      showAlert(data.message, "green");
+        const { data } = await axios.post(
+          `${apiUrlAuth}/signup`,
+          newState.formInputValue,
+          {
+            withCredentials: true,
+          }
+        );
+        // console.log(data);
+        dispatch({ type: "EMPTY_FORM_INPUT_FIELD" });
+        showAlert(data.message, "green");
 
-      changeProductAndUserStateAfterAuth();
-    } catch (err: any) {
-      showAlert(err.response.data.message, "red");
-      // console.log(err.response.data);
-    }
-  };
+        changeProductAndUserStateAfterAuth();
+      } catch (err: any) {
+        showAlert(err.response.data.message, "red");
+        // console.log(err.response.data);
+      }
+    },
+    [changeProductAndUserStateAfterAuth, newState.formInputValue]
+  );
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
+    // const logout = async () => {
     try {
       await axios.get(`${apiUrlAuth}/logout`, {
         withCredentials: true,
@@ -279,9 +297,10 @@ const AppProvider = ({ children }: { children: any }) => {
       await isLoggedIn();
     } catch (err: any) {
       // console.log(err.response.data);
-      showAlert("Something went wrong", "red");
+      showAlert("Something went wrong, try reloading", "red");
     }
-  };
+    // };
+  }, []);
 
   useEffect(() => {
     fetchAllProducts();
@@ -292,9 +311,7 @@ const AppProvider = ({ children }: { children: any }) => {
   useEffect(() => {
     // setFav();
     isLoggedIn();
-
-    // handleSearchChange();
-  });
+  }, [login, signup, logout]);
 
   useEffect(() => {
     const timer = setTimeout(() => {

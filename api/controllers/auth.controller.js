@@ -51,7 +51,12 @@ exports.signup = async (req, res) => {
 
     const token = jwt.sign({ user: newUser._id }, process.env.JWT_SECRET);
 
-    res.cookie("token", token);
+    // res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
 
     res.status(201).json({
       message: "User registered successfully",
@@ -92,7 +97,12 @@ exports.login = async (req, res) => {
 
     const token = jwt.sign({ user: foundUser._id }, process.env.JWT_SECRET);
 
-    res.cookie("token", token);
+    // res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
 
     res.status(200).json({
       message: "User loggedin successfully",
@@ -107,9 +117,15 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
   try {
-    res.clearCookie("token").send();
+    // res.clearCookie("token").send();
     // res.cookie("token", "").send();
-    res.status(200).json({ message: "Logged out successfully" });
+    res
+      .clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      })
+      .send();
   } catch (err) {
     res.status(400).json({ message: "Something went wrong" });
   }

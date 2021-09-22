@@ -49,7 +49,7 @@ const AdminAdd = () => {
       }, 2500);
     } catch (err: any) {
       // console.log(err);
-      showAlert(err.response.data.message, "red");
+      showAlert("Something went wrong, try reloading", "red");
     }
   };
 
